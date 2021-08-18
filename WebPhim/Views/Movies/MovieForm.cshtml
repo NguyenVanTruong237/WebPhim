@@ -1,0 +1,34 @@
+﻿@model WebPhim.ViewModel.MovieFormViewModel
+@{
+    ViewBag.Title = "MovieForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Movies</h2>
+@using (Html.BeginForm("Save", "Movies"))
+{
+    <div class="form-group">
+        <label>Tên phim</label>
+        @Html.TextBoxFor(m => m.Movie.Name, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label>Ngày công chiếu</label>
+        @Html.TextBoxFor(m => m.Movie.RealeaseDate, "{0:d MMM yyyy}", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label>Ngày thêm </label>
+        @Html.TextBoxFor(m => m.Movie.DateAdded, "{0:d MMM yyyy}", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label>Số lượng trên kệ </label>
+        @Html.TextBoxFor(m => m.Movie.NumberStock, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label>Thể loại phim</label>
+        @Html.DropDownListFor(m => m.Movie.GenreMovieId, new SelectList(Model.Genremovies, "Id", "Name"), new { @class = "form-control" })
+    </div>
+    @Html.HiddenFor(m => m.Movie.Id)
+    <button type="submit" class="btn btn-default">Lưu</button>
+
+}
+

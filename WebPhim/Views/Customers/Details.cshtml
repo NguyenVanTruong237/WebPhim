@@ -1,0 +1,28 @@
+﻿@model WebPhim.Models.Customer
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name</h2>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Membership Type </th>
+            <th>Sinh nhật </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.MembershipType.Name</td>
+            @if (Model.SinhNhat.HasValue)
+            {
+                <td>@Model.SinhNhat.Value.ToShortDateString()</td>
+            }
+            else
+            {
+                <td>Not infomation !</td>
+            }
+        </tr>
+    </tbody>
+</table>

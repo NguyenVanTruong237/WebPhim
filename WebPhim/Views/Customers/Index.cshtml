@@ -1,0 +1,38 @@
+﻿@model IEnumerable<WebPhim.Models.Customer>
+@{
+    ViewBag.Title ="Customers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customers</h2>
+@Html.ActionLink("Thêm Khách Hàng", "New", "Customers", null, new {@class = "btn btn-primary"})
+@if (!Model.Any())
+{
+    <p>Không có khách hàng nào !</p>
+}
+else
+{
+<table class="table table-bordered table-hover">
+    <thead>  
+    <tr>       
+        <th>Danh sách khách hàng.</th>
+        <th>Discount Member</th>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach (var customer in Model)
+        { 
+            <tr>
+                <td>                    
+                    @Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id }, null)                      
+                </td>
+                <td>
+                    @customer.MembershipType.Name
+                </td>
+            </tr>
+         }
+    </tbody>
+</table>
+}
+
+

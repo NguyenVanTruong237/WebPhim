@@ -1,0 +1,57 @@
+﻿@model WebPhim.Models.Movie
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name</h2>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Model.Name
+            </th>
+        <tr> 
+            <th>
+                <li>Thể loại: @Model.GenreMovie.Name</li>
+            </th>
+        </tr>
+        <tr>
+            <th>
+                @if (Model.RealeaseDate == null)
+                {
+                    <p> Ngày debut: No information</p>
+                }
+                else
+                {
+                    <li>Ngày debut: @Model.RealeaseDate.Value.ToShortDateString()</li>
+                }
+            </th>
+        </tr>
+        <tr>
+            <th>
+                @if (Model.DateAdded == null)
+                {
+                    <p>Ngày thêm: No information</p>
+                }
+                else
+                {
+                    <li>Ngày thêm: @Model.DateAdded.Value.ToShortDateString()</li>
+                }
+            </th>
+        </tr>
+        <tr>
+            <th>
+                @if (Model.NumberStock == null)
+                {
+                    <p>SL trong Kho: No information</p>
+                }
+                else
+                {
+                    <li>SL trong Kho: @Model.NumberStock</li>
+                }
+            </th>
+        </tr>
+        </tr>
+    </thead>
+</table>
