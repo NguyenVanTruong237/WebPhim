@@ -23,8 +23,9 @@ namespace WebPhim.Controllers
         public ActionResult New()
         {
             var membershipType = _context.MembershipTypes.ToList();
-            var modelView = new CustomerFormViewModel 
+            var modelView = new CustomerFormViewModel
             {
+                customer = new Customer(),
                 membershipTypes = membershipType            
             };
             return View("customerForm", modelView);
@@ -38,10 +39,12 @@ namespace WebPhim.Controllers
                 membershipTypes = _context.MembershipTypes.ToList()
            };
             return View("CustomerForm",viewModel);
-        }        
+        }   
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Customer customer)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) //dữ liệu của object nhập vào không có giá trị
             {
                 var viewModel = new CustomerFormViewModel
                 {

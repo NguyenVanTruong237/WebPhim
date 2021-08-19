@@ -7,27 +7,38 @@
 <h2>Customer</h2>
 @using (Html.BeginForm("Save", "Customers"))
 {
+    @Html.ValidationSummary(true, "Vui lòng điền thông tin bên dưới.")
     <div class="form-group">
         <label>Tên</label>
         @Html.TextBoxFor(m => m.customer.Name, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.customer.Name)
     </div>
     <div class="form-group">
-        <label>Sinh nhật</label>
-        @Html.TextBoxFor(m => m.customer.SinhNhat, "{0:d MMM yyyy}", new { @class = "form-control" })
+        <label>Đăng kí thành viên</label>
+        @Html.DropDownListFor(m => m.customer.MembershipTypeId, new SelectList(Model.membershipTypes, "Id", "Name"), "Chọn loại thành viên", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.customer.MembershipTypeId)
     </div>
     <div class="form-group">
-        <label>Đăng kí thành viên</label>
-        @Html.DropDownListFor(m => m.customer.MembershipTypeId, new SelectList(Model.membershipTypes, "Id", "Name"),"Chọn loại thành viên", new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.customer.MembershipTypeId)
+        <label>Sinh nhật</label>
+        @Html.TextBoxFor(m => m.customer.SinhNhat, "{0:d MMM yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.customer.SinhNhat)
     </div>
     <div class="checkbox">
         <label>
             @Html.CheckBoxFor(m => m.customer.IsSubscribedToNewsLetter) Receive news from us!
         </label>
     </div>
+    @Html.AntiForgeryToken()
     @Html.HiddenFor(m => m.customer.Id)
     <button type="submit" class="btn btn-default">Lưu</button>
 }
 
-
+@*Xác nhận phía người dùng: ví dụ, chúng tôi đã tải 10 trường nhưng 4 
+trong số đó không đúng, không có giai đoạn xác thực trên máy khách, 
+dữ liệu phải đến máy chủ và sau đó quay lại trả lời phía khách,sẽ là mất thời gian của người dùng,
+nhưng nếu trước khi gửi thông tin,chức năng xác minh phía người dùng bắt buộc phải xác minh dữ liệu của khách,
+hoàn tất mới gửi về sever.*@
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
