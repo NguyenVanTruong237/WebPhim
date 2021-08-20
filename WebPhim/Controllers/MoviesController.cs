@@ -32,15 +32,28 @@ namespace WebPhim.Controllers
         public ActionResult Edit(int id)
         {
             var movie = _context.Movies.SingleOrDefault(c => c.Id == id);
-            var viewModel = new MovieFormViewModel
+            if (movie == null)
             {
-                Movie = movie,
+                return HttpNotFound();
+            }
+            var viewModel = new MovieFormViewModel (movie)
+            {                
                 Genremovies = _context.GenreMovies.ToList()
             };
             return View("MovieForm",viewModel);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Movie movie)
-        {           
+        {
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new MovieFormViewModel (movie)
+                {                   
+                    Genremovies = _context.GenreMovies.ToList()
+                };
+                return View("MovieForm",viewModel);
+            }
             if (movie.Id == 0)
             {
                 _context.Movies.Add(movie);
@@ -49,8 +62,8 @@ namespace WebPhim.Controllers
             {
                 var movieInDB = _context.Movies.SingleOrDefault(c => c.Id == movie.Id);
                 movieInDB.Name = movie.Name;
-                movieInDB.RealeaseDate = movie.RealeaseDate;
                 movieInDB.DateAdded = movie.DateAdded;
+                movieInDB.RealeaseDate = movie.RealeaseDate;               
                 movieInDB.GenreMovieId= movie.GenreMovieId;
                 movieInDB.NumberStock = movie.NumberStock;
             }
@@ -63,14 +76,14 @@ namespace WebPhim.Controllers
             var movies = _context.Movies.Include(c => c.GenreMovie).ToList();
             return View(movies);
         }    
-        public ActionResult Details(int id)
-        {
-            var movie = _context.Movies.Include(c => c.GenreMovie).SingleOrDefault(c => c.Id ==  id);
-            if (movie == null)
-            {
-                return HttpNotFound();
-            }           
-            return View(movie);
-        }
+        //public ActionResult Details(int id)
+        //{
+        //    var movie = _context.Movies.Include(c => c.GenreMovie).SingleOrDefault(c => c.Id ==  id);
+        //    if (movie == null)
+        //    {
+        //        return HttpNotFound();
+        //    }           
+        //    return View(movie);
+        //}
     }
 }

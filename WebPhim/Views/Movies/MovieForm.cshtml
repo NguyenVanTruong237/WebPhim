@@ -7,28 +7,35 @@
 <h2>Movies</h2>
 @using (Html.BeginForm("Save", "Movies"))
 {
+    @Html.ValidationSummary(true, "Vui lòng nhập đầy đủ thông tin.")
     <div class="form-group">
         <label>Tên phim</label>
-        @Html.TextBoxFor(m => m.Movie.Name, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name)
     </div>
     <div class="form-group">
         <label>Ngày công chiếu</label>
-        @Html.TextBoxFor(m => m.Movie.RealeaseDate, "{0:d MMM yyyy}", new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.RealeaseDate, "{0:d MMM yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.RealeaseDate)
     </div>
-    <div class="form-group">
-        <label>Ngày thêm </label>
-        @Html.TextBoxFor(m => m.Movie.DateAdded, "{0:d MMM yyyy}", new { @class = "form-control" })
-    </div>
+    <label>Ngày thêm</label>
+    @Html.TextBoxFor(m => m.DateAdded, "{0:d MMM yyyy}", new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.DateAdded)
     <div class="form-group">
         <label>Số lượng trên kệ </label>
-        @Html.TextBoxFor(m => m.Movie.NumberStock, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.NumberStock, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.NumberStock)
     </div>
     <div class="form-group">
         <label>Thể loại phim</label>
-        @Html.DropDownListFor(m => m.Movie.GenreMovieId, new SelectList(Model.Genremovies, "Id", "Name"), new { @class = "form-control" })
+        @Html.DropDownListFor(m => m.GenreMovieId, new SelectList(Model.Genremovies, "Id", "Name"), "Chọn thể loại phim", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.GenreMovieId)
     </div>
-    @Html.HiddenFor(m => m.Movie.Id)
+    @Html.HiddenFor(m => m.Id)
+    @Html.AntiForgeryToken()
     <button type="submit" class="btn btn-default">Lưu</button>
-
 }
 
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
