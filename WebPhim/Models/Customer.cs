@@ -18,6 +18,5 @@ namespace WebPhim.Models
         public byte MembershipTypeId { get; set; }     
         [MinYearsIfAMember]
         public DateTime? SinhNhat { get; set; }
-
     }
 }
