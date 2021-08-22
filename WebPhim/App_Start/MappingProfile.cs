@@ -14,6 +14,8 @@ namespace WebPhim.App_Start
         {
             CreateMap<Customer, CustomerDto>();
             CreateMap<CustomerDto, Customer>();
+            CreateMap<Movie, MovieDto>();
+            CreateMap<MovieDto, Movie>();
         }
         //NOTE:
         //Class MappingProfile thừa kế từ class base Profile.
