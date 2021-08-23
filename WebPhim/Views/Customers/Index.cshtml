@@ -12,11 +12,12 @@
 }
 else
 {
-<table class="table table-bordered table-hover">
+<table id="customers" class="table table-bordered table-hover">
     <thead>  
     <tr>       
         <th>Danh sách khách hàng.</th>
         <th>Discount Member</th>
+        <th>XÓA</th>
     </tr>
     </thead>
     <tbody>
@@ -29,10 +30,32 @@ else
                 <td>
                     @customer.MembershipType.Name
                 </td>
+                <td>
+                    <button data-customer-id="@customer.Id" class="btn-link js-delete">Delete </button>
+                </td>
             </tr>
          }
     </tbody>
 </table>
 }
+@section scripts
+{
+    <script>
+        $(document).ready(function(){
+            $("#customers .js-delete").on("click", function () {
+                if (confirm("Bạn có chắc chắn xóa khách hàng này?")) {
+                    $.ajax({
+                        url: "/api/customers/" + $(this).attr("data-customer-id"),
+                        method: "DELETE",
+                        success: function () {
+                            location.reload(true);
+                            $(this).parents("tr").remove();
+                        }                            
+                    });
+                }
+            });
+        });
+    </script>        
+}
 
-
+  
