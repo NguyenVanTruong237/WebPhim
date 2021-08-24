@@ -69,9 +69,8 @@ namespace WebPhim.Controllers
             return RedirectToAction("Index", "Customers");
         }
         public ViewResult Index()
-        {
-            var customer = _context.Customers.Include(c => c.MembershipType).ToList();
-            return View(customer);
+        {           
+            return View();
         }
         // details
         //public ActionResult Details(int id)

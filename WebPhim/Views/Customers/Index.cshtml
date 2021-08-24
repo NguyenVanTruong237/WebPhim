@@ -6,12 +6,6 @@
 
 <h2>Customers</h2>
 @Html.ActionLink("Thêm Khách Hàng", "New", "Customers", null, new {@class = "btn btn-primary"})
-@if (!Model.Any())
-{
-    <p>Không có khách hàng nào !</p>
-}
-else
-{
 <table id="customers" class="table table-bordered table-hover">
     <thead>  
     <tr>       
@@ -20,29 +14,37 @@ else
         <th>XÓA</th>
     </tr>
     </thead>
-    <tbody>
-        @foreach (var customer in Model)
-        { 
-            <tr>
-                <td>                    
-                    @Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id }, null)                      
-                </td>
-                <td>
-                    @customer.MembershipType.Name
-                </td>
-                <td>
-                    <button data-customer-id="@customer.Id" class="btn-link js-delete">Delete </button>
-                </td>
-            </tr>
-         }
+    <tbody>        
     </tbody>
-</table>
-}
+</table>   
 @section scripts
 {
     <script>
-        $(document).ready(function(){
-            $("#customers .js-delete").on("click", function () {
+        $(document).ready(function () {
+            $("#customers").DataTable({
+                ajax: {
+                    url: "/api/customers/",
+                    dataSrc: ""                    
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, customer) {
+                            return "<a href='/customers/edit/" + customer.id + "'>" + data + "</a>";
+                        }
+                    },
+                    {
+                        data: "membershipType.name"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-customer-id="+data+">Delete</buton>"
+                        }
+                    }
+                ]                
+            });               
+            $("#customers").on("click", " .js-delete", function () {
                 if (confirm("Bạn có chắc chắn xóa khách hàng này?")) {
                     $.ajax({
                         url: "/api/customers/" + $(this).attr("data-customer-id"),
