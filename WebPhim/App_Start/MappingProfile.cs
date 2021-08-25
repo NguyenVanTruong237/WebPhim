@@ -18,6 +18,8 @@ namespace WebPhim.App_Start
             CreateMap<MovieDto, Movie>();
             CreateMap<MembershipType, MembershipTypeDto>();
             CreateMap<MembershipTypeDto,MembershipType >();
+            CreateMap<GenreMovie,GenreMovieDto>();
+            CreateMap<GenreMovieDto,GenreMovie>();
         }
         //NOTE:
         //Class MappingProfile thừa kế từ class base Profile.

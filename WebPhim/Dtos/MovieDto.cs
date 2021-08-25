@@ -15,7 +15,8 @@ namespace WebPhim.Dtos
         public DateTime RealeaseDate { get; set; }
         public DateTime DateAdded { get; set; }
         [Range(1, 20)]
-        public byte NumberStock { get; set; }        
+        public byte NumberStock { get; set; }
+        public GenreMovieDto GenreMovie { get; set; }
         [Required]
         public int GenreMovieId { get; set; }
     }

@@ -72,9 +72,8 @@ namespace WebPhim.Controllers
         }
         // GET: Movies
         public ViewResult Index()
-        {
-            var movies = _context.Movies.Include(c => c.GenreMovie).ToList();
-            return View(movies);
+        {           
+            return View();
         }    
         //public ActionResult Details(int id)
         //{

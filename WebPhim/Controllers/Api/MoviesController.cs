@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Data.Entity;
 using WebPhim.App_Start;
 using WebPhim.Dtos;
 using WebPhim.Models;
@@ -25,7 +26,7 @@ namespace WebPhim.Controllers.Api
         //GET api/movies
         public IEnumerable<MovieDto> GetMovieDtos()
         {
-            return _context.Movies.ToList().Select(iMapper.Map<Movie, MovieDto>);
+            return _context.Movies.Include(c => c.GenreMovie).ToList().Select(iMapper.Map<Movie, MovieDto>);
         }
         //GET api/movies/1
         public IHttpActionResult Getmovie (int id)

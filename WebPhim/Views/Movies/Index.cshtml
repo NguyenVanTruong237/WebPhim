@@ -6,23 +6,61 @@
 
 <h2>Movies List</h2>
 @Html.ActionLink("Thêm phim mới", "New", "Movies", null,new {@class = "btn btn-default"})
-    <table class="table table-bordered table-hover">
+    <table id="Movies" class="table table-bordered table-hover">
         <thead>
             <tr>
                 <th>Danh sách phim.</th>
                 <th>Thể loại</th>
+                <th>XÓA</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var movie in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.ActionLink(movie.Name, "Edit", "Movies", new { id = movie.Id }, null)
-                    </td>
-                    <td>@movie.GenreMovie.Name</td>
-                </tr>
-            }
+        <tbody>           
         </tbody>
     </table>
+@section scripts 
+{
+    <script>
+        $(document).ready(function () {
+            $("#Movies").DataTable({
+                ajax: {
+                    url: "/api/movies/",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data,type,movie) {
+                            return "<a href='/Movies/edit/" + movie.id + "'>" + data + "</a>";
+                        }
+                    },
+                    {
+                        data: "genreMovie.name",                        
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class = 'btn-link js-delete' data-movie-id=" + data + ">DELETE</button>";
+                        }
+                    }
+                ]                
+            });
+            $("#Movies").on("click", ".js-delete", function () {
+                if (confirm("Bạn có chắc chắn muốn xóa?")) {
+                    $.ajax({
+                        url: "/api/movies/" + $(this).attr("data-movie-id"),
+                        method: "DELETE",
+                        success: function () {
+                            location.reload(true);
+                            $(this).parents("tr").remove();
+                        }
+                });
+                }
+                
+            });
+        });
+    </script>
+
+
+
+}
 
