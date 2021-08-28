@@ -152,11 +152,16 @@ namespace WebPhim.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    DrivingLicense = model.DrivingLicense,
+                    Phone = model.Phone
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    //TEMP Code
+                    //TEMP Code 
                     //var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
                     //var roleManage = new RoleManager<IdentityRole>(roleStore);
                     //await roleManage.CreateAsync(new IdentityRole("Admin"));
