@@ -16,6 +16,7 @@ namespace WebPhim.Models
         public DateTime DateAdded { get; set; }       
         [Range(1,20)]
         public byte NumberStock { get; set; }
+        public byte NumberAvailable { get; set; }
         public GenreMovie GenreMovie { get; set; }
         [Required]
         public int GenreMovieId { get; set; }
