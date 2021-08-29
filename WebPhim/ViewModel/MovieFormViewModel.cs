@@ -20,7 +20,11 @@ namespace WebPhim.ViewModel
         public DateTime? RealeaseDate { get; set; }       
         [Required(ErrorMessage = "Vui lòng nhập số lượng trong kho.")]
         [Range(1, 20)]
-        public byte? NumberStock { get; set; }       
+        public byte? NumberStock { get; set; }
+        [Required]
+        [Compare("NumberStock")]
+        public byte? NumberAvailable { get; set; }
+
         [Required(ErrorMessage = "Vui lòng chọn thể loại.")]
         public int? GenreMovieId { get; set; }
         public MovieFormViewModel()
@@ -35,6 +39,7 @@ namespace WebPhim.ViewModel
             NumberStock = movie.NumberStock;
             GenreMovieId = movie.GenreMovieId;
             DateAdded = movie.DateAdded;
+            NumberAvailable = movie.NumberAvailable;
         }
     }
 }

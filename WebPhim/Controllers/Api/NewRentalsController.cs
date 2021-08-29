@@ -23,6 +23,7 @@ namespace WebPhim.Controllers.Api
             var movies = _context.Movies.Where(m => newRental.MovieIds.Contains(m.Id));
             foreach (var movie in movies)
             {
+                
                 if (movie.NumberAvailable == 0)
                     return BadRequest("Phim bạn muốn thuê đã hết.");
 
@@ -31,7 +32,9 @@ namespace WebPhim.Controllers.Api
                 {
                     Customer = customer,
                     Movie = movie,
-                    DateRented = DateTime.Now
+                    DateRented = DateTime.Now,
+                    DateReturned = DateTime.Now
+                    
                 };
                 _context.Rentals.Add(rental);
             }

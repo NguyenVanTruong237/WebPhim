@@ -46,6 +46,8 @@ namespace WebPhim.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Save(Movie movie)
         {
+            //if (movie.NumberAvailable != movie.NumberStock)
+            //    return View("MovieForm", viewModel);
             if (!ModelState.IsValid)
             {
                 var viewModel = new MovieFormViewModel (movie)
@@ -66,6 +68,7 @@ namespace WebPhim.Controllers
                 movieInDB.RealeaseDate = movie.RealeaseDate;               
                 movieInDB.GenreMovieId= movie.GenreMovieId;
                 movieInDB.NumberStock = movie.NumberStock;
+                movieInDB.NumberAvailable = movie.NumberAvailable;
             }
             _context.SaveChanges();
             return RedirectToAction("Index", "Movies");

@@ -16,6 +16,7 @@ namespace WebPhim.Dtos
         public DateTime DateAdded { get; set; }
         [Range(1, 20)]
         public byte NumberStock { get; set; }
+        public byte NumberAvailable { get; set; }
         public GenreMovieDto GenreMovie { get; set; }
         [Required]
         public int GenreMovieId { get; set; }

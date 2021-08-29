@@ -24,9 +24,15 @@ namespace WebPhim.Controllers.Api
             iMapper = config.CreateMapper();
         }
         //GET api/movies
-        public IEnumerable<MovieDto> GetMovieDtos()
+        public IHttpActionResult GetMovies (string query = null)
         {
-            return _context.Movies.Include(c => c.GenreMovie).ToList().Select(iMapper.Map<Movie, MovieDto>);
+            var queryMovies = _context.Movies
+                .Include(m => m.GenreMovie)
+                .Where(m => m.NumberAvailable > 0);
+            if (!string.IsNullOrWhiteSpace(query))
+                queryMovies = queryMovies.Where(c => c.Name.Contains(query));
+            var moviesDto = queryMovies.ToList().Select(iMapper.Map<Movie, MovieDto>);
+            return Ok(moviesDto);
         }
         //GET api/movies/1
         public IHttpActionResult Getmovie (int id)

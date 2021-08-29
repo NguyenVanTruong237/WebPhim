@@ -25,9 +25,15 @@ namespace WebPhim.Controllers.Api
             iMapper = config.CreateMapper(); //Khởi tạo mapper
         }
         // GET /api/Customers
-        public IEnumerable<CustomerDto> GetCustomers()
+        public IHttpActionResult getCustomers(string query = null)
         {
-            return _context.Customers.Include(c => c.MembershipType).ToList().Select(iMapper.Map<Customer, CustomerDto>);
+            var customersQuery = _context.Customers
+                .Include(c => c.MembershipType);
+            if (!string.IsNullOrWhiteSpace(query))
+                customersQuery = customersQuery.Where(c => c.Name.Contains(query));
+                var customersDto = customersQuery
+                .ToList().Select(iMapper.Map<Customer,CustomerDto>);
+            return Ok(customersDto);
         }
         // GET /api/Customers/1
         public IHttpActionResult GetCustomer(int id)

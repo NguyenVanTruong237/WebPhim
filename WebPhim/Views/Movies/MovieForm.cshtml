@@ -27,6 +27,11 @@
         @Html.ValidationMessageFor(m => m.NumberStock)
     </div>
     <div class="form-group">
+        <label>Số lượng khả dụng </label>
+        @Html.TextBoxFor(m => m.NumberAvailable, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.NumberAvailable)
+    </div>
+    <div class="form-group">
         <label>Thể loại phim</label>
         @Html.DropDownListFor(m => m.GenreMovieId, new SelectList(Model.Genremovies, "Id", "Name"), "Chọn thể loại phim", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.GenreMovieId)
