@@ -3,18 +3,18 @@
     ViewBag.Title = "New Rental Form";
 }
 
-<h2>New Rental Form</h2>
+<h2>Thuê phim</h2>
 <form id="newRental">
     <div class="form-group">
         <label>Customer</label>
         <div class="tt-container">
-            <input id="customer" type="text" value="" class="form-control" />
+            <input id="customer" name="customer" data-rule-validCustomer="true" required type="text" value="" class="form-control" />
         </div>
     </div>
     <div class="form-group">
         <label>Movie</label>
         <div class="tt-contain">
-            <input id="movie" type="text" value="" class="form-control" />
+            <input id="movie" name="movie" data-rule-validMovie="true" type="text" value="" class="form-control" />
         </div>
     </div>
     <div class="row">
@@ -26,10 +26,10 @@
 </form>
 @section scripts
 {
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
             var vm = {
-                movieIds: [],
                 movieIds: []
             };
             //Typeahead Customers
@@ -37,7 +37,7 @@
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
                 remote: {
-                    url: '/api/customers?query=%QUERY',
+                    url: '/api/customers?query=%QUERY', //Input nhập tìm
                     wildcard: '%QUERY'
                 }
             });
@@ -46,11 +46,11 @@
                 hightlight: true
             }, {
                 name: 'customers',
-                display: 'name',
+                display: 'name',    //data xổ ra là name và source từ api/customers
                 source: customers,
                 limit: 20
             }).on("typeahead:select", function (e, customer) {
-                vm.customerId = customer.id;
+                vm.customerId = customer.id; //Truyền id customer vào vm
             });
             //Typeahead Movies
             var movies = new Bloodhound({
@@ -70,24 +70,42 @@
                 source: movies,
                 limit: 20
             }).on("typeahead:select", function (e, movie) {
-                $("#movies").append("<liv class='list-group-item'>"+ movie.name+"</li>");
+                $("#movies").append("<liv class='list-group-item'>" + movie.name + "</li>");
                 $("#movies").typeahead("val", "");
                 vm.movieIds.push(movie.id);
             });
-            $("#newRental").submit(function (e) {
-                e.preventDefault();
-                $.ajax({
-                    url: "/api/NewRentals/",
-                    method: "post",
-                    data: vm
-                })
-                    .done(function () {
-                        console.log("done")
-                    })
-                    .fail(function () {
 
-                    });
+            $.validator.addMethod("validCustomer", function () {
+                return vm.customerId && vm.customerId !== 0; //check giá trị nhập vào có trùng vm.customerid và khác 0 hay không?
+            }, "Vui lòng nhập đúng tên khách hàng.");
+
+            $.validator.addMethod("validMovie", function () {
+                return vm.movieIds.length > 0;
+            }, "Vui lòng chọn ít nhất 1 bộ phim.");
+
+            var validator = $("#newRental").validate({
+                submitHandler: function (form, e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: "/api/NewRentals/",
+                        method: "post",
+                        data: vm
+                    })
+                        .done(function () {
+                            toastr.success("Thuê phim thành công.");
+                            $("customer").typeahead("val", "");
+                            $("#movie").typeahead("val", "");       
+                            $("#movies").empty();
+                            vm = { movieIds: [] };
+                            validator.resetForm();
+                        })
+                        .fail(function () {
+                            toastr.success("Thất bại.");
+                        });
+                    return false;
+                }
             });
+
         });
     </script>
 }

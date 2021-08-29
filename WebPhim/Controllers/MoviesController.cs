@@ -41,13 +41,11 @@ namespace WebPhim.Controllers
                 Genremovies = _context.GenreMovies.ToList()
             };
             return View("MovieForm",viewModel);
-        }
+        } 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Save(Movie movie)
         {
-            //if (movie.NumberAvailable != movie.NumberStock)
-            //    return View("MovieForm", viewModel);
             if (!ModelState.IsValid)
             {
                 var viewModel = new MovieFormViewModel (movie)
